@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNM - мы знаем, где это взять</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Основные стили */
+        :root {
+            --primary: #c14432;
+            --background: #efe9db;
+            --text-dark: #182f4d;
+            --text-darker: #262626;
+            --text-light: #efe9db;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--background);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Стили для полноэкранных блоков */
+        .fullscreen-section {
+            min-height: 100vh;
+            width: 100%;
+            padding: 80px 5%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Навигация */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(239, 233, 219, 0.9);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            padding: 15px 5%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            height: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled .logo {
+            height: 40px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Главный экран */
+        .hero {
+            background: linear-gradient(rgba(239, 233, 219, 0.8), rgba(239, 233, 219, 0.8)), 
+                        url('https://images.unsplash.com/photo-1508804185872-d7badad00f7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-darker);
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .hero .logo {
+            width: 500px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
+        }
+        
+        .btn:hover {
+            background-color: transparent;
+            color: var(--primary);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            margin-left: 15px;
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Раздел "Кто мы?" */
+        .about {
+            background-color: white;
+        }
+        
+        .section-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 40px;
+        }
+        
+        .about-text h3 {
+            font-size: 1.8rem;
+            color: var(--text-darker);
+            margin-bottom: 20px;
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+        
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+        
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .china-icon {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .china-icon-1 {
+            top: -20px;
+            left: -20px;
+        }
+        
+        .china-icon-2 {
+            bottom: -20px;
+            right: -20px;
+        }
+        
+        /* Раздел услуг */
+        .services {
+            background-color: var(--background);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            color: var(--text-darker);
+            margin-bottom: 15px;
+        }
+        
+        .service-card p {
+            color: var(--text-dark);
+        }
+        
+        /* Раздел преимуществ */
+        .advantages {
+            background-color: white;
+        }
+        
+        .advantages-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+        
+        .advantage-item {
+            flex: 0 0 calc(33.333% - 30px);
+            min-width: 250px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .advantage-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .advantage-text h3 {
+            font-size: 1.3rem;
+            color: var(--text-darker);
+            margin-bottom: 10px;
+        }
+        
+        .advantage-text p {
+            color: var(--text-dark);
+        }
+        
+        /* Контакты */
+        .contact {
+            background-color: var(--background);
+        }
+        
+        .contact-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+        
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 40px;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.8rem;
+            color: var(--text-darker);
+            margin-bottom: 20px;
+        }
+        
+        .contact-info p {
+            margin-bottom: 30px;
+            color: var(--text-dark);
+        }
+        
+        .contact-details {
+            margin-bottom: 30px;
+        }
+        
+        .contact-details div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .contact-details i {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 15px;
+        }
+        
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-darker);
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Футер */
+        footer {
+            background-color: var(--text-darker);
+            color: var(--text-light);
+            padding: 50px 5% 20px;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin: 0 10px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeInUp 1s ease forwards;
+        }
+        
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+        
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+        
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .about-text {
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+            
+            .advantage-item {
+                flex: 0 0 calc(50% - 20px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: var(--background);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.5s ease;
+            }
+            
+        @media (max-width: 768px) {
+            .hero .logo {
+                width: 200px; /* Уменьшенный размер на мобильных */
+            }
+        }
+
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .advantage-item {
+                flex: 0 0 100%;
+            }
+            
+            .contact-info {
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .btn-container {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .btn-outline {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+            
+            .about-image {
+                margin-top: 30px;
+            }
+            
+            .china-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 30px;
+            }
+        }
+        
+        /* Заглушка для кастомных шрифтов */
+        @font-face {
+            font-family: 'Font Over';
+            src: local('Montserrat'), local('Arial');
+            font-weight: bold;
+        }
+        
+        @font-face {
+            font-family: 'Qualion';
+            src: local('Montserrat'), local('Arial');
+        }
+        
+        /* Стили для китайских акцентов */
+        .chinese-pattern {
+            position: absolute;
+            opacity: 0.05;
+            z-index: 0;
+        }
+        
+        .pattern-1 {
+            top: 50px;
+            right: 50px;
+            width: 200px;
+            height: 200px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23c14432" d="M50 0 L100 50 L50 100 L0 50 Z"/></svg>');
+            background-repeat: no-repeat;
+        }
+        
+        .pattern-2 {
+            bottom: 50px;
+            left: 50px;
+            width: 150px;
+            height: 150px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle fill="%23c14432" cx="50" cy="50" r="40"/></svg>');
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar">
+        <img src="images/snmlogo.png" alt="SNM" class="logo">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">главная</a></li>
+             <li><a href="#about">о нас</a></li>
+            <li><a href="#services">услуги</a></li>
+            <li><a href="#advantages">преимущества</a></li>
+            <li><a href="#contact">контакты</a></li>
+        </ul>
+    </nav>
+
+    <!-- Главный экран -->
+    <section class="fullscreen-section hero" id="home">
+        <div class="hero-content fade-in">
+            <img src="images/snm.png" alt="SNM" class="logo">
+            <p>мы знаем, где это взять</p>
+            <div class="btn-container">
+                <a href="#services" class="btn">наши услуги</a>
+                <a href="#contact" class="btn btn-outline">связаться с нами</a>
+            </div>
+        </div>
+        <div class="chinese-pattern pattern-1"></div>
+        <div class="chinese-pattern pattern-2"></div>
+    </section>
+
+    <!-- О нас -->
+    <section class="fullscreen-section about" id="about">
+        <h2 class="section-title fade-in">КТО МЫ?</h2>
+        <div class="about-content">
+            <div class="about-text fade-in delay-1">
+                <p>SNM - это команда профессионалов с многолетним опытом работы на китайском рынке. Мы помогаем бизнесу находить лучшие товары, организовывать их производство и доставку, экономя ваше время и деньги.</p>
+                <p>Наши офисы расположены как в Москве, так и в Китае, что позволяет нам оперативно решать любые вопросы и контролировать качество товаров на всех этапах.</p>
+                <p>Мы говорим на языке вашего бизнеса и понимаем специфику работы с китайскими поставщиками.</p>
+            </div>
+            <div class="about-image fade-in delay-2">
+                <img src="images/photo1.jpeg" alt="Наша команда">
+                <div class="china-icon china-icon-1">
+                    <i class="fas fa-warehouse"></i>
+                </div>
+                <div class="china-icon china-icon-2">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Услуги -->
+    <section class="fullscreen-section services" id="services">
+        <h2 class="section-title fade-in">НАШИ УСЛУГИ</h2>
+        <div class="services-grid">
+            <div class="service-card fade-in">
+                <div class="service-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3>Выкуп товаров</h3>
+                <p>Находим и покупаем товары по лучшим ценам напрямую у производителей, минуя посредников.</p>
+            </div>
+            <div class="service-card fade-in delay-1">
+                <div class="service-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Подбор товаров</h3>
+                <p>Находим именно то, что нужно вашему бизнесу, учитывая все технические требования и бюджет.</p>
+            </div>
+            <div class="service-card fade-in delay-2">
+                <div class="service-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <h3>Брендирование</h3>
+                <p>Кастомизируем товары под ваш бренд: от нанесения логотипов до полной переработки дизайна.</p>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Контроль качества</h3>
+                <p>Проверяем товар перед отправкой на соответствие заявленным характеристикам и стандартам.</p>
+            </div>
+            <div class="service-card fade-in delay-1">
+                <div class="service-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>Консультации</h3>
+                <p>Анализируем бизнес-процессы и советуем, как улучшить работу с Китаем и сократить издержки.</p>
+            </div>
+            <div class="service-card fade-in delay-2">
+                <div class="service-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <h3>Логистика и доставка</h3>
+                <p>Организуем доставку от склада в Китае до Москвы без задержек и с оптимальными тарифами.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества -->
+    <section class="fullscreen-section advantages" id="advantages">
+        <h2 class="section-title fade-in">ПОЧЕМУ ВЫБИРАЮТ НАС</h2>
+        <div class="advantages-content">
+            <div class="advantage-item fade-in">
+                <div class="advantage-icon">
+                    <i class="fas fa-globe-asia"></i>
+                </div>
+                <div class="advantage-text">
+                    <h3>Присутствие в Китае</h3>
+                    <p>Наши сотрудники работают непосредственно в Китае, что позволяет оперативно решать все вопросы.</p>
+                </div>
+            </div>
+            <div class="advantage-item fade-in delay-1">
+                <div class="advantage-icon">
+                    <i class="fas fa-ruble-sign"></i>
+                </div>
+                <div class="advantage-text">
+                    <h3>Экономия до 40%</h3>
+                    <p>Прямые контракты с производителями позволяют предлагать лучшие цены на рынке.</p>
+                </div>
+            </div>
+            <div class="advantage-item fade-in delay-2">
+                <div class="advantage-icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="advantage-text">
+                    <h3>Персональный менеджер</h3>
+                    <p>Каждый клиент получает персонального менеджера, который сопровождает все этапы работы.</p>
+                </div>
+            </div>
+            <div class="advantage-item fade-in">
+                <div class="advantage-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <div class="advantage-text">
+                    <h3>Знание языка и менталитета</h3>
+                    <p>Мы свободно говорим на китайском и понимаем местные бизнес-традиции.</p>
+                </div>
+            </div>
+            <div class="advantage-item fade-in delay-1">
+                <div class="advantage-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="advantage-text">
+                    <h3>Гарантии и безопасность</h3>
+                    <p>Официальные контракты, проверенные поставщики и полная финансовая прозрачность.</p>
+                </div>
+            </div>
+            <div class="advantage-item fade-in delay-2">
+                <div class="advantage-icon">
+                    <i class="fas fa-history"></i>
+                </div>
+                <div class="advantage-text">
+                    <h3>Опыт более 10 лет</h3>
+                    <p>Мы работаем с 2010 года и успешно реализовали более 500 проектов различной сложности.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section class="fullscreen-section contact" id="contact">
+        <h2 class="section-title fade-in">СВЯЖИТЕСЬ С НАМИ</h2>
+        <div class="contact-content">
+            <div class="contact-info fade-in">
+                <h3>Готовы начать сотрудничество?</h3>
+                <p>Оставьте заявку, и наш менеджер свяжется с вами в течение рабочего дня для обсуждения деталей.</p>
+                <div class="contact-details">
+                    <div>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Москва, ул. Китайгородская, 7</span>
+                    </div>
+                    <div>
+                        <i class="fas fa-phone-alt"></i>
+                        <span>+7 (777) 777-77-77</span>
+                    </div>
+                    <div>
+                        <i class="fas fa-envelope"></i>
+                        <span>info@snm.ru</span>
+                    </div>
+                    <div>
+                        <i class="fas fa-clock"></i>
+                        <span>Пн-Пт: 7:00 - 17:00</span>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-telegram-plane"></i></a>
+                    <a href="#"><i class="fab fa-weixin"></i></a>
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                </div>
+            </div>
+            <div class="contact-form fade-in delay-1">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Ваше имя</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Сообщение</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>SNM</h3>
+                <p>мы знаем, где это взять</p>
+            </div>
+            <div class="footer-column">
+                <h3>Услуги</h3>
+                <ul>
+                    <li><a href="#services">Выкуп товаров</a></li>
+                    <li><a href="#services">Подбор товаров</a></li>
+                    <li><a href="#services">Брендирование</a></li>
+                    <li><a href="#services">Контроль качества</a></li>
+                    <li><a href="#services">Логистика</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Компания</h3>
+                <ul>
+                    <li><a href="#about">О нас</a></li>
+                    <li><a href="#advantages">Преимущества</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                    <li><a href="#">Вакансии</a></li>
+                    <li><a href="#">Блог</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Юридическая информация</h3>
+                <ul>
+                    <li><a href="#">Политика конфиденциальности</a></li>
+                    <li><a href="#">Договор оферты</a></li>
+                    <li><a href="#">Реквизиты</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 SNM. все права защищены.
+        </div>
+    </footer>
+
+    <script>
+        // Мобильное меню
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Закрытие меню при клике на ссылку
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Фиксация навигации при скролле
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Плавная прокрутка для всех ссылок
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Анимация при скролле
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.fade-in');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+        
+        // Обработка формы
+        const contactForm = document.getElementById('contactForm');
+        
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Здесь можно добавить AJAX-запрос для отправки формы
+                alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
+                this.reset();
+            });
+        }
+    </script>
+</body>
+</html>
